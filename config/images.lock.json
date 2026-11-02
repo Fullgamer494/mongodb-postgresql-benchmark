@@ -1,0 +1,55 @@
+{
+  "verified_at": "2026-11-01",
+  "platform": "linux/amd64",
+  "images": {
+    "postgresql": {
+      "reference": "postgres:18.6-trixie@sha256:f4b419e350fd98d4a8429603295208976dea4c8fb8326d818d346d3e29f1db6f",
+      "manifest_verified": true,
+      "pulled": true,
+      "inspected_image_version": "18.6-1.pgdg13+2",
+      "pgdata": "/var/lib/postgresql/18/docker",
+      "persistent_mount": "/var/lib/postgresql"
+    },
+    "mongodb": {
+      "reference": "mongodb/mongodb-community-server:9.0.4-ubi8-slim@sha256:a25ebe616b146f41dfa3ccd90256e065494414b69cc7641119bea346b0c5d2ff",
+      "manifest_verified": true,
+      "pulled": true,
+      "started": true,
+      "healthy": true,
+      "inspected_image_version": "9.0.4",
+      "host_compatibility": "Ubuntu 24.04.4 with kernel 7.0.0-38-generic; official exception SERVER-131779/SERVER-125742",
+      "preflight_report": "docs/preflight-mongodb-profile-a.json",
+      "notes": "Initial start exposed unsupported systemLog.destination=console; removed the systemLog block so Docker captures mongod stdout."
+    },
+    "prometheus": {
+      "reference": "prom/prometheus:v3.15.1@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae",
+      "manifest_verified": true,
+      "pulled": true,
+      "inspected_image_version": "3.15.1",
+      "platform": "linux/amd64",
+      "started": true,
+      "ready_endpoint_http": 200,
+      "prometheus_targets_up": true
+    },
+    "cadvisor": {
+      "reference": "ghcr.io/google/cadvisor:v0.60.6@sha256:bd7c00644d65e6c9fc2c151cab70d2e86d7fe3e0182cfb9863120ec2e017cf01",
+      "manifest_verified": true,
+      "pulled": true,
+      "inspected_image_version": "0.60.6",
+      "platform": "linux/amd64",
+      "started": true,
+      "container_health": "healthy",
+      "prometheus_target_up": true
+    },
+    "node_exporter": {
+      "reference": "quay.io/prometheus/node-exporter:v1.12.1@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798",
+      "manifest_verified": true,
+      "pulled": true,
+      "inspected_image_version": "1.12.1",
+      "platform": "linux/amd64",
+      "started": true,
+      "metrics_endpoint_verified": true,
+      "prometheus_target_up": true
+    }
+  }
+}

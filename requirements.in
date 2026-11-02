@@ -1,0 +1,4 @@
+# Runtime dependencies for dataset validation and native database clients.
+jsonschema==4.26.0
+pymongo==4.19.0
+psycopg[binary]==3.3.6

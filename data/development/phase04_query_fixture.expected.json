@@ -1,0 +1,41 @@
+{
+  "fixture_count": 1004,
+  "fixture_sha256": "89132f0007b91178057cb77039c96f6d4fc3a7a820a17e43a6e0e1308a4ad27c",
+  "q1": [
+    {
+      "avg_impact": "165",
+      "category": "credential_attack",
+      "count": 2,
+      "country": "MX",
+      "total_impact": "330"
+    },
+    {
+      "avg_impact": "80",
+      "category": "network_scan",
+      "count": 1,
+      "country": "MX",
+      "total_impact": "80"
+    },
+    {
+      "avg_impact": "165",
+      "category": "credential_attack",
+      "count": 2,
+      "country": "US",
+      "total_impact": "330"
+    }
+  ],
+  "q2": {
+    "cutoff_risk_score": 80,
+    "eligible_above_cutoff": 2,
+    "eligible_at_cutoff": 1000,
+    "eligible_count": 1002,
+    "excluded_before_timestamp": 1,
+    "excluded_pending": 1,
+    "risk_score_histogram": {
+      "100": 1,
+      "80": 1000,
+      "90": 1
+    },
+    "selected_at_cutoff": 998
+  }
+}

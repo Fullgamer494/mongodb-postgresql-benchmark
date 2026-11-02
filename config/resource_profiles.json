@@ -1,0 +1,14 @@
+{
+  "PROFILE_A_BASELINE": {
+    "cpus": 4.0,
+    "memory_mib": 4096
+  },
+  "PROFILE_B_MEDIUM": {
+    "cpus": 2.0,
+    "memory_mib": 2048
+  },
+  "PROFILE_C_SEVERE": {
+    "cpus": 1.0,
+    "memory_mib": 1024
+  }
+}

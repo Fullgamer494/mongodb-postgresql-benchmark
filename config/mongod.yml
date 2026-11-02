@@ -1,0 +1,19 @@
+storage:
+  dbPath: /data/db
+  wiredTiger:
+    engineConfig:
+      cacheSizeGB: 0.256
+net:
+  port: 27017
+  bindIpAll: true
+  maxIncomingConnections: 256
+security:
+  authorization: enabled
+setParameter:
+  internalQueryMaxMemoryUsageBytesPerOperation: 1073741824
+  internalQueryMaxSingleExpressionMemoryUsageBytes: 104857600
+  internalQueryStatsSampleRate: 0
+operationProfiling:
+  mode: off
+  slowOpThresholdMs: 100
+  slowOpSampleRate: 1.0

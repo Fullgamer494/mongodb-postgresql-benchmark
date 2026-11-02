@@ -1,0 +1,58 @@
+{
+  "category_counts": {
+    "credential_attack": 300395,
+    "data_exfiltration": 299554,
+    "malware_indicator": 300564,
+    "network_scan": 299140,
+    "policy_violation": 300158
+  },
+  "config_sha256": "e88083ce5f2d952e2732a679aac31688e0ea057a9b8b6b07d61e9395172a7044",
+  "configured_status_probabilities": {
+    "confirmed": 0.6,
+    "dismissed": 0.15,
+    "pending": 0.25
+  },
+  "configured_timestamp_range": {
+    "max": "2026-12-31T23:59:59Z",
+    "min": "2025-01-01T00:00:00Z"
+  },
+  "count": 500000,
+  "country_counts": {
+    "BR": 83680,
+    "CL": 83287,
+    "CO": 82936,
+    "ES": 83015,
+    "MX": 83692,
+    "US": 83390
+  },
+  "detection_count_distribution": {
+    "1": 99913,
+    "2": 100175,
+    "3": 99843,
+    "4": 100326,
+    "5": 99743
+  },
+  "detections": {
+    "max_per_event": 5,
+    "mean_per_event": 2.999622,
+    "min_per_event": 1,
+    "total": 1499811
+  },
+  "format": "jsonl",
+  "generator_sha256": "1e04749508af4bd4e80683e6619605b2621d357ea72a7b0b35a985a4ad33f7f2",
+  "generator_version": "1.0.0",
+  "manifest_version": 1,
+  "schema_sha256": "fc98966dff34aef75c51368c460e8aee68eba489b9c4539b4abd8f3cc620055c",
+  "seed": 20261101,
+  "sha256": "db1f045711ad2d923921f66ab09a5129cfc46f9ddca218820acee8c8007fb9f3",
+  "size_bytes": 349196514,
+  "status_counts": {
+    "confirmed": 300212,
+    "dismissed": 74701,
+    "pending": 125087
+  },
+  "timestamp_range": {
+    "max": "2026-12-31T23:58:51Z",
+    "min": "2025-01-01T00:00:09Z"
+  }
+}

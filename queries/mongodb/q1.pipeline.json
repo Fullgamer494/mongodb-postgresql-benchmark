@@ -1,0 +1,39 @@
+[
+  {
+    "$unwind": "$detections"
+  },
+  {
+    "$match": {
+      "detections.impact_score": {
+        "$gt": 50
+      }
+    }
+  },
+  {
+    "$group": {
+      "_id": {
+        "country": "$device.network.country",
+        "category": "$detections.category"
+      },
+      "total_impact": {
+        "$sum": {
+          "$multiply": [
+            "$detections.occurrences",
+            "$detections.impact_score"
+          ]
+        }
+      },
+      "avg_impact": {
+        "$avg": {
+          "$multiply": [
+            "$detections.occurrences",
+            "$detections.impact_score"
+          ]
+        }
+      },
+      "count": {
+        "$sum": 1
+      }
+    }
+  }
+]

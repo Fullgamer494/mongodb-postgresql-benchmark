@@ -1,0 +1,48 @@
+{
+  "event_id": "ce71601a-7e0c-4bd5-bc1e-919210274704",
+  "timestamp": "2026-03-20T14:30:00Z",
+  "device": {
+    "device_id": "DEV-000042",
+    "platform": "linux",
+    "network": {
+      "country": "MX",
+      "state": "Chiapas",
+      "city": "Tuxtla",
+      "asn": 64512
+    }
+  },
+  "incident": {
+    "status": "confirmed",
+    "risk_score": 87
+  },
+  "detections": [
+    {
+      "signature": "SIG-001",
+      "category": "credential_attack",
+      "occurrences": 3,
+      "impact_score": 70,
+      "confidence": 90
+    },
+    {
+      "signature": "SIG-002",
+      "category": "network_scan",
+      "occurrences": 2,
+      "impact_score": 55,
+      "confidence": 80
+    },
+    {
+      "signature": "SIG-003",
+      "category": "policy_violation",
+      "occurrences": 1,
+      "impact_score": 20,
+      "confidence": 75
+    }
+  ],
+  "metadata": {
+    "channel": "sensor",
+    "sensor_version": "demo-1",
+    "flags": {
+      "synthetic": true
+    }
+  }
+}

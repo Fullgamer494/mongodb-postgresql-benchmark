@@ -1,0 +1,26 @@
+[
+  {
+    "$match": {
+      "incident.status": "confirmed",
+      "timestamp": {
+        "$gte": "2026-01-01T00:00:00Z"
+      }
+    }
+  },
+  {
+    "$sort": {
+      "incident.risk_score": -1
+    }
+  },
+  {
+    "$limit": 1000
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "event_id": 1,
+      "device.device_id": 1,
+      "incident.risk_score": 1
+    }
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "official_count": 500000,
+  "seed": 20261101,
+  "format": "jsonl",
+  "date_start": "2025-01-01T00:00:00Z",
+  "date_end": "2026-12-31T23:59:59Z",
+  "detections_count": {
+    "distribution": "uniform_integer",
+    "min": 1,
+    "max": 5,
+    "expected_mean": 3
+  },
+  "status_probabilities": {
+    "confirmed": 0.6,
+    "pending": 0.25,
+    "dismissed": 0.15
+  },
+  "categories": [
+    "credential_attack",
+    "network_scan",
+    "malware_indicator",
+    "policy_violation",
+    "data_exfiltration"
+  ],
+  "countries": [
+    "MX",
+    "US",
+    "BR",
+    "ES",
+    "CO",
+    "CL"
+  ],
+  "q1_threshold": 50,
+  "q2_since": "2026-01-01T00:00:00Z",
+  "q2_limit": 1000
+}

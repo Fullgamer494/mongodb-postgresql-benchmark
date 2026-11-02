@@ -1,0 +1,54 @@
+{
+  "engines": [
+    "mongodb",
+    "postgresql"
+  ],
+  "profiles": [
+    "PROFILE_A_BASELINE",
+    "PROFILE_B_MEDIUM",
+    "PROFILE_C_SEVERE"
+  ],
+  "concurrency": [
+    1,
+    10,
+    50
+  ],
+  "repetitions": 3,
+  "warmup_seconds": 60,
+  "measurement_seconds": 300,
+  "cooldown_seconds": 60,
+  "base_queries": [
+    "Q1",
+    "Q2"
+  ],
+  "extended_queries": [
+    "Q1",
+    "Q2",
+    "Q2_ALT"
+  ],
+  "q2_treatments": {
+    "mongodb": {
+      "Q2": {
+        "allowDiskUse": false
+      },
+      "Q2_ALT": {
+        "allowDiskUse": true
+      }
+    },
+    "postgresql": {
+      "Q2": {
+        "work_mem": "4MB"
+      },
+      "Q2_ALT": {
+        "work_mem": "64MB"
+      }
+    }
+  },
+  "expected_runs": {
+    "base": 108,
+    "extended": 162
+  },
+  "schedule_seed": 20261101,
+  "execution": "serial",
+  "state": "design_not_executed"
+}

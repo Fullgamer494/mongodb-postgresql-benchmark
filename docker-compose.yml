@@ -1,0 +1,165 @@
+name: u2-benchmark
+
+services:
+  postgresql:
+    image: postgres:18.6-trixie@sha256:f4b419e350fd98d4a8429603295208976dea4c8fb8326d818d346d3e29f1db6f
+    init: true
+    restart: unless-stopped
+    cpus: "${LAB_CPUS:-4.0}"
+    mem_limit: "${LAB_MEMORY_MIB:-4096}m"
+    memswap_limit: "${LAB_MEMORY_MIB:-4096}m"
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB:-security_benchmark}"
+      POSTGRES_USER: "${POSTGRES_USER:?Set POSTGRES_USER in .env}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}"
+      PGDATA: /var/lib/postgresql/18/docker
+    command:
+      - postgres
+      - -c
+      - shared_buffers=256MB
+      - -c
+      - max_connections=64
+      - -c
+      - effective_cache_size=512MB
+      - -c
+      - hash_mem_multiplier=1.0
+      - -c
+      - max_parallel_workers=0
+      - -c
+      - max_parallel_workers_per_gather=0
+      - -c
+      - work_mem=4MB
+      - -c
+      - statement_timeout=120s
+      - -c
+      - log_temp_files=0
+      - -c
+      - 'log_line_prefix=%m [%p] %q%u@%d app=%a '
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - postgresql_data:/var/lib/postgresql
+    networks:
+      - benchmark
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 15s
+    labels:
+      com.u2-benchmark.engine: postgresql
+      com.u2-benchmark.profile: "${LAB_PROFILE:-PROFILE_A_BASELINE}"
+
+  mongodb:
+    image: mongodb/mongodb-community-server:9.0.4-ubi8-slim@sha256:a25ebe616b146f41dfa3ccd90256e065494414b69cc7641119bea346b0c5d2ff
+    init: true
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    cpus: "${LAB_CPUS:-4.0}"
+    mem_limit: "${LAB_MEMORY_MIB:-4096}m"
+    memswap_limit: "${LAB_MEMORY_MIB:-4096}m"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME:?Set MONGO_INITDB_ROOT_USERNAME in .env}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD:?Set MONGO_INITDB_ROOT_PASSWORD in .env}"
+      MONGO_INITDB_DATABASE: security_benchmark
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+    ports:
+      - "127.0.0.1:${MONGO_HOST_PORT:-27017}:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./config/mongod.yml:/etc/mongod.conf:ro
+    networks:
+      - benchmark
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          mongosh --quiet --host 127.0.0.1
+          --username "$${MONGO_INITDB_ROOT_USERNAME}"
+          --password "$${MONGO_INITDB_ROOT_PASSWORD}"
+          --authenticationDatabase admin
+          --eval 'quit(db.adminCommand({ping:1}).ok ? 0 : 2)'
+      interval: 5s
+      timeout: 4s
+      retries: 20
+      start_period: 20s
+    labels:
+      com.u2-benchmark.engine: mongodb
+      com.u2-benchmark.profile: "${LAB_PROFILE:-PROFILE_A_BASELINE}"
+
+  prometheus:
+    image: prom/prometheus:v3.15.1@sha256:d445d1806b38f85b5c394a1b87f94113fde0473b45245922c2e8b1bd41fa68ae
+    init: true
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=14d
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./config/observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - benchmark
+    labels:
+      com.u2-benchmark.role: observability
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:v0.60.6@sha256:bd7c00644d65e6c9fc2c151cab70d2e86d7fe3e0182cfb9863120ec2e017cf01
+    init: true
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    command:
+      - --docker_only=true
+      - --housekeeping_interval=1s
+      - --max_housekeeping_interval=1s
+      - --allow_dynamic_housekeeping=false
+      - --enable_metrics=cpu,memory,diskIO,oom_event
+      - --store_container_labels=false
+      - --whitelisted_container_labels=com.docker.compose.service,com.u2-benchmark.engine,com.u2-benchmark.profile
+    volumes:
+      - /:/rootfs:ro,rslave
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+    networks:
+      - benchmark
+    labels:
+      com.u2-benchmark.role: observability
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:v1.12.1@sha256:da83fae85603c4e47e6c68369a7d746e2dda683dc35ea2e234b4f171e0d92798
+    init: true
+    restart: unless-stopped
+    pid: host
+    command:
+      - --path.rootfs=/host
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --path.udev.data=/host/run/udev/data
+    volumes:
+      - /:/host:ro,rslave
+    networks:
+      - benchmark
+    labels:
+      com.u2-benchmark.role: observability
+
+networks:
+  benchmark:
+    name: u2lab_benchmark
+
+volumes:
+  postgresql_data:
+    name: u2lab_postgresql_data
+  mongodb_data:
+    name: u2lab_mongodb_data
+  prometheus_data:
+    name: u2lab_prometheus_data
